@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using QPH_ParamsChannelsEnterprise.Core.DTOs;
 using QPH_ParamsChannelsEnterprise.Core.Enumerators;
+using QPH_ParamsChannelsEnterprise.Core.Validations.Customized;
 
 namespace QPH_ParamsChannelsEnterprise.Core.Validations
 {
@@ -17,7 +18,8 @@ namespace QPH_ParamsChannelsEnterprise.Core.Validations
                 .NotNull().WithMessage("La razón social es requerida.");
 
             RuleFor(t => t.RUC)
-                .MaximumLength(20).WithMessage("El RUC no puede tener más de 20 caracteres.")
+                .MustBeValidRUC()
+                .MaximumLength(20).WithMessage("El RUC no puede tener más de 20 caracteres.")                
                 .NotNull().WithMessage("El RUC es requerido.");
 
             RuleFor(t => t.DireccionMatriz)
