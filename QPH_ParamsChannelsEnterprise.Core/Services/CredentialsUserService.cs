@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using QPH.Encriptacion.Core.Interfaces;
 using QPH_ParamsChannelsEnterprise.Core.CustomEntities;
 using QPH_ParamsChannelsEnterprise.Core.DTOs;
 using QPH_ParamsChannelsEnterprise.Core.Entities.AdministrationSwitch;
@@ -18,13 +19,15 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IPasswordService _passwordService;
+        private readonly IEncriptador _qphEncriptador;
         private readonly SieveProcessor _sieveProcessor;
 
-        public CredentialsUserService(IUnitOfWork unitOfWork, IMapper mapper, IPasswordService passwordService, SieveProcessor sieveProcessor)
+        public CredentialsUserService(IUnitOfWork unitOfWork, IMapper mapper, IPasswordService passwordService, IEncriptador qphEncriptador, SieveProcessor sieveProcessor)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _passwordService = passwordService;
+            _qphEncriptador = qphEncriptador;
             _sieveProcessor = sieveProcessor;
         }
 
@@ -43,10 +46,16 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
             List<CredentialsUser> resultDB = PagedList<CredentialsUser>.CreateSourceFromQuery(credentialsUserQuery, sieveModel);
 
             // Map results to DTO
-            var CredentialsUserDB = _mapper.Map<List<CredentialsUserDTO>>(resultDB);
+            var credentialsUserDB = _mapper.Map<List<CredentialsUserDTO>>(resultDB);
+
+            // Encrypt Password
+            foreach(var credential in credentialsUserDB)
+            {
+                credential.Password = _qphEncriptador.Encriptar(credential.Password);
+            }
 
             // Map the result to PagedList
-            var result = PagedList<CredentialsUserDTO>.CreateFromResults(CredentialsUserDB, sieveModel, totalCount);
+            var result = PagedList<CredentialsUserDTO>.CreateFromResults(credentialsUserDB, sieveModel, totalCount);
 
             return result;
         }
@@ -55,6 +64,8 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
         {
             CredentialsUser dbRecord = await _unitOfWork.CredentialsUserRepository.GetById(id);
             CredentialsUserDTO result = _mapper.Map<CredentialsUserDTO>(dbRecord);
+            result.Password = _qphEncriptador.Encriptar(result.Password);
+
             return result;
         }
 
