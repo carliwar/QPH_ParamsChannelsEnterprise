@@ -64,7 +64,7 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
             CredentialsServer dbRecord = _mapper.Map<CredentialsServer>(newCredentialServer);
 
             // Encrypt password
-            dbRecord.Password = _passwordService.Hash(dbRecord.Password);
+            //dbRecord.Password = _passwordService.Hash(dbRecord.Password);
 
             await _unitOfWork.CredentialsServerRepository.Add(dbRecord);
             await _unitOfWork.SaveAdministrationSwitchChangesAsync();

@@ -28,7 +28,7 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
             return results;
         }
 
-        public async Task<ChannelEnterpriseInfoDTO> GetChannelEnterpriseByDocumentNumber(string documentNumber)
+        public async Task<ChannelEnterpriseInfoDTO> GetChannelEnterpriseByDocumentNumber(string documentNumber, string proveedor)
         {
             List<ChannelEnterpriseInfo> dbRecords = await _unitOfWork.AdministrationSwitchProceduresRepository.GetChannelEnterpriseViewResult(null);
             

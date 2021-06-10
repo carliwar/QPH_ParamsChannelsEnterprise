@@ -2,7 +2,7 @@ USE AdministrationSwitch
 GO
 EXEC sp_rename 'Channel.AuthotizationNumber', 'AuthorizationNumber', 'COLUMN'
 GO
-EXEC sp_rename 'EnterpriseCredentials.CredenTialsUserID', 'CredentialsUserID', 'COLUMN'
+EXEC sp_rename 'EnterpriseCredentials.CredencialsUserID', 'CredentialsUserID', 'COLUMN'
 GO
 ALTER TABLE [ChannelNonBillableProducts] 
 ALTER COLUMN ChannelID BIGINT NOT NULL

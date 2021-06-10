@@ -7,7 +7,7 @@ namespace QPH_ParamsChannelsEnterprise.Core.Interfaces.Services
     public interface IChannelEnterpriseService
     {
         Task<List<ChannelEnterpriseInfoDTO>> GetChannelEnterprisesInfo(string channel);
-        Task<ChannelEnterpriseInfoDTO> GetChannelEnterpriseByDocumentNumber(string documentNumber);
+        Task<ChannelEnterpriseInfoDTO> GetChannelEnterpriseByDocumentNumber(string documentNumber, string proveedor);
         Task<NonBillableProductsInfoDTO> GetNonBillableProducts(string code, string channel);
         Task<bool> IsNonBillableProduct(string code, string channel);
         Task<bool> UpdateChannelEnterprise(ChannelEnterpriseDTO channelEnterpriseDTO);

@@ -30,9 +30,9 @@ namespace QPH_ParamsChannelsEnterprise.Controllers
         }
 
         [HttpGet("/GetChannelByDocumentNumber")]
-        public async Task<IActionResult> Get(string documentNumber)
+        public async Task<IActionResult> Get(string documentNumber, string proveedor)
         {
-            ChannelEnterpriseInfoDTO result = await _channelEnterpriseService.GetChannelEnterpriseByDocumentNumber(documentNumber);
+            ChannelEnterpriseInfoDTO result = await _channelEnterpriseService.GetChannelEnterpriseByDocumentNumber(documentNumber, proveedor);
 
             var response = new ApiResponse<ChannelEnterpriseInfoDTO>(result);
 
@@ -40,7 +40,7 @@ namespace QPH_ParamsChannelsEnterprise.Controllers
         }
 
         [HttpGet("/GetNonBillableProducts")]
-        public async Task<IActionResult> Get(string code, string channel)
+        public async Task<IActionResult> GetNonBillableProducts(string code, string channel)
         {
             NonBillableProductsInfoDTO result = await _channelEnterpriseService.GetNonBillableProducts(code, channel);
 
