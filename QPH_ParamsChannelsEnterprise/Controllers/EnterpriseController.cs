@@ -33,6 +33,7 @@ namespace QPH_ParamsChannelsEnterprise.Controllers
             return Ok(response);
         }
 
+        // method to get enterprise by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEnterprise(int id)
         {
