@@ -28,7 +28,7 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
 
         public PagedList<BusinessLineDTO> GetAllBusinessLines(SieveModel sieveModel)
         {
-            // Get all query
+            // Get all query 
             IQueryable<BusinessLine> businessLineQuery = _unitOfWork.BusinessLineRepository.GetAll();
 
             // Apply filtering to the query
