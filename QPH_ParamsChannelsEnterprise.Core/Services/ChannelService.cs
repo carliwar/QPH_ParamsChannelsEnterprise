@@ -49,7 +49,7 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
             return result;
         }
 
-        public async Task<ChannelDTO> GetChannel(int id)
+        public async Task<ChannelDTO> GetChannel(long id)
         {
             Channel dbRecord = await _unitOfWork.ChannelRepository.GetById(id);
             ChannelDTO result = _mapper.Map<ChannelDTO>(dbRecord);

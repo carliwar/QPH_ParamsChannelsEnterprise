@@ -15,11 +15,17 @@ namespace QPH_ParamsChannelsEnterprise.Infrastructure.Repositories
         public AdministrationSwitchProceduresRepository(AdministrationSwitchContext context)
         {
             _context = context;
-        }       
+        }
 
         public async Task<List<ChannelEnterpriseInfo>> GetChannelEnterpriseViewResult(string channel)
         {
             List<ChannelEnterpriseInfo> result = await _context.ChannelEnterpriseInfo.FromSqlRaw("exec GetChannel @Channel={0}", channel).ToListAsync();
+            return result;
+        }
+
+        public IQueryable<ChannelEnterpriseInfo> GetAllChannelEnterprise()
+        {
+            var result = _context.ChannelEnterpriseInfo.FromSqlRaw("exec GetChannel @Channel={0}", string.Empty);
             return result;
         }
 

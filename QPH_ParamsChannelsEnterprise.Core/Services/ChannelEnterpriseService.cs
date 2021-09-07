@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using QPH_ParamsChannelsEnterprise.Core.CustomEntities;
 using QPH_ParamsChannelsEnterprise.Core.DTOs;
 using QPH_ParamsChannelsEnterprise.Core.Entities.AdministrationSwitch;
 using QPH_ParamsChannelsEnterprise.Core.Interfaces;
 using QPH_ParamsChannelsEnterprise.Core.Interfaces.Services;
+using Sieve.Models;
+using Sieve.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,12 +17,16 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly SieveProcessor _sieveProcessor;
 
-        public ChannelEnterpriseService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ChannelEnterpriseService(IUnitOfWork unitOfWork, IMapper mapper, SieveProcessor sieveProcessor)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-        }       
+            _sieveProcessor = sieveProcessor;
+        }
+
+        public ISieveProcessor SieveProcessor { get; set; }
 
         public async Task<List<ChannelEnterpriseInfoDTO>> GetChannelEnterprisesInfo(string channel)
         {
@@ -28,10 +35,25 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
             return results;
         }
 
+        public PagedListSieve<ChannelEnterpriseInfo> GetAllChannelsEnterprise(SieveModel sieveModel)
+        {
+            var entityFilter = _unitOfWork.AdministrationSwitchProceduresRepository.GetAllChannelEnterprise();
+            var page = sieveModel?.Page ?? 1;
+            var pageSize = sieveModel?.PageSize ?? 10;
+
+            if (sieveModel != null)
+            {
+                // apply pagination in a later step
+                entityFilter = _sieveProcessor.Apply(sieveModel, entityFilter, applyPagination: false);
+            }
+            var pagedPosts = PagedListSieve<ChannelEnterpriseInfo>.CreateFromQuerable(entityFilter, page, pageSize);
+            return pagedPosts;
+        }
+
         public async Task<ChannelEnterpriseInfoDTO> GetChannelEnterpriseByDocumentNumber(string documentNumber, string proveedor)
         {
             List<ChannelEnterpriseInfo> dbRecords = await _unitOfWork.AdministrationSwitchProceduresRepository.GetChannelEnterpriseViewResult(null);
-            
+
             string emissionPoint = documentNumber.Substring(3, 3);
 
             ChannelEnterpriseInfo channel = dbRecords.FirstOrDefault(s => s.PuntoEmision == emissionPoint);
@@ -46,7 +68,7 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
 
         public async Task<NonBillableProductsInfoDTO> GetNonBillableProducts(string code, string channel)
         {
-            GetNonBilllableProductsResult dbResult = 
+            GetNonBilllableProductsResult dbResult =
                 await _unitOfWork.AdministrationSwitchProceduresRepository.GetNonBillableProducts(code, channel);
 
             if (dbResult == null)

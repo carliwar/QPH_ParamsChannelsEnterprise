@@ -1,7 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using QPH_ParamsChannelsEnterprise.Core.CustomEntities;
 using QPH_ParamsChannelsEnterprise.Core.DTOs;
+using QPH_ParamsChannelsEnterprise.Core.Entities.AdministrationSwitch;
 using QPH_ParamsChannelsEnterprise.Core.Interfaces.Services;
 using QPH_ParamsChannelsEnterprise.Responses;
+using Sieve.Models;
+using Sieve.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,10 +19,14 @@ namespace QPH_ParamsChannelsEnterprise.Controllers
     public class ChannelEnterpriseController : Controller
     {
         private readonly IChannelEnterpriseService _channelEnterpriseService;
+        private readonly SieveProcessor _sieveProcessor;
+        private readonly IMapper _mapper;
 
-        public ChannelEnterpriseController(IChannelEnterpriseService channelEnterpriseService)
+        public ChannelEnterpriseController(IChannelEnterpriseService channelEnterpriseService, IMapper mapper, SieveProcessor sieveProcessor)
         {
             _channelEnterpriseService = channelEnterpriseService;
+            _mapper = mapper;
+            _sieveProcessor = sieveProcessor;
         }
 
         [HttpGet]
@@ -26,6 +36,29 @@ namespace QPH_ParamsChannelsEnterprise.Controllers
 
             var response = new ApiResponse<IEnumerable<ChannelEnterpriseInfoDTO>>(results);
 
+            return Ok(response);
+        }
+
+        [HttpGet("All")]
+        public IActionResult GetAllChannelsEnterprise(SieveModel sieveModel)
+        {
+            _channelEnterpriseService.SieveProcessor = _sieveProcessor;
+            PagedListSieve<ChannelEnterpriseInfo> entity = _channelEnterpriseService.GetAllChannelsEnterprise(sieveModel);
+            IEnumerable<ChannelEnterpriseInfoDTO> entityDTO = _mapper.Map<IEnumerable<ChannelEnterpriseInfoDTO>>(entity);
+            Metadata metadata = new Metadata
+            {
+                TotalCount = entity.TotalCount,
+                PageSize = entity.PageSize,
+                CurrentPage = entity.CurrentPage,
+                TotalPages = entity.TotalPages,
+                HasNextPage = entity.HasNextPage,
+                HasPreviousPage = entity.HasPreviousPage,
+            };
+            ApiResponse<IEnumerable<ChannelEnterpriseInfoDTO>> response = new ApiResponse<IEnumerable<ChannelEnterpriseInfoDTO>>(entityDTO)
+            {
+                Meta = metadata
+            };
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             return Ok(response);
         }
 

@@ -38,7 +38,7 @@ namespace QPH_ParamsChannelsEnterprise.Core.DTOs
         public string EnlaceCotization { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
-        public string AuthorizationNumber { get; set; }
+        public string AuthotizationNumber { get; set; }
         public int? ProductItemGroupCode { get; set; }
         public string Declarable { get; set; }
         public string IVACode { get; set; }
@@ -67,5 +67,12 @@ namespace QPH_ParamsChannelsEnterprise.Core.DTOs
         public int? CodeCreditCard { get; set; }
         public string CodigoMotivoNotaCredito { get; set; }
         public string PaymentMadeAccount { get; set; }
+        public bool StatusInvoice { get; set; }
+        public bool StatusCreditNote { get; set; }
+        public bool StatusCotization { get; set; }
+        public int? StartDay { get; set; }
+        public int? FinishDay { get; set; }
+        public TimeSpan? StartTime { get; set; }
+        public TimeSpan? FinishTime { get; set; }
     }
 }

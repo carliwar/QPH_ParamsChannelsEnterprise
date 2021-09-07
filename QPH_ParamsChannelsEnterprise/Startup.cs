@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using QPH.Encriptacion.DependencyInjection;
+//using QPH.Encriptacion.DependencyInjection;
 using QPH_ParamsChannelsEnterprise.Filters;
 using QPH_ParamsChannelsEnterprise.Infrastructure.Extensions;
 using Sieve.Services;
@@ -33,7 +33,7 @@ namespace QPH_ParamsChannelsEnterprise
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<SieveProcessor>();
             services.AddServices();
-            services.AddQPHEncriptador();
+            //services.AddQPHEncriptador();
             services.AddSwagger($"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
             services.AddSwaggerGen(c =>
             {

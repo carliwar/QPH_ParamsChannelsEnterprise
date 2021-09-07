@@ -8,6 +8,7 @@ namespace QPH_ParamsChannelsEnterprise.Core.Interfaces
     {
         IQueryable<T> GetAll();
         Task<T> GetById(int id);
+        Task<T> GetById(long id);
         Task Add(T entity);
         Task Add(List<T> entities);
         Task BulkInsert(List<T> entities);

@@ -36,8 +36,8 @@ namespace QPH_ParamsChannelsEnterprise.Infrastructure.Data.Configurations.Admini
             builder.Property(e => e.Description)
                 .HasColumnName("Description");
 
-            builder.Property(e => e.AuthorizationNumber)
-                .HasColumnName("AuthorizationNumber");
+            builder.Property(e => e.AuthotizationNumber)
+                .HasColumnName("AuthotizationNumber");
 
             builder.Property(e => e.ProductItemGroupCode)
                 .HasColumnName("ProductItemGroupCode");

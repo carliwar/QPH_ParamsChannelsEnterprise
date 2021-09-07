@@ -67,7 +67,7 @@ namespace QPH_ParamsChannelsEnterprise.Core.Validations
                .MaximumLength(500).WithMessage("La descripción no puede tener más de 500 caracteres.")
                .NotNull().WithMessage("La descripción es requerida.");
 
-            RuleFor(t => t.AuthorizationNumber)
+            RuleFor(t => t.AuthotizationNumber)
                .MaximumLength(20).WithMessage("El número de autorización no puede tener más de 20 caracteres.")
                .NotNull().WithMessage("El número de autorización es requerido.");
 

@@ -7,7 +7,7 @@ namespace QPH_ParamsChannelsEnterprise.Core.Interfaces.Services
 {
     public interface IChannelService
     {
-        Task<ChannelDTO> GetChannel(int id);
+        Task<ChannelDTO> GetChannel(long id);
         Task InsertChannel(ChannelDTO newChannel);
         Task<bool> UpdateChannel(ChannelDTO updatedChannel);
         Task<bool> DeleteChannel(int id);

@@ -19,6 +19,7 @@ namespace QPH_ParamsChannelsEnterprise.Infrastructure.Repositories
         }
         public IQueryable<T> GetAll() => _entities.AsQueryable<T>();
         public async Task<T> GetById(int id) => await _entities.FindAsync(id);
+        public async Task<T> GetById(long id) => await _entities.FindAsync(id);
         public async Task Add(T entity) => await _entities.AddAsync(entity);
         public async Task BulkInsert(List<T> entities) => await _context.BulkInsertAsync(entities);
         public async Task Add(List<T> entities) => await _entities.AddRangeAsync(entities);

@@ -13,7 +13,7 @@ namespace QPH_ParamsChannelsEnterprise.Core.Entities.AdministrationSwitch
         public int? IdentificatorChannelSAP { get; set; }
         public int? IdentificatorChannelCreditNoteSAP { get; set; }
         public string Description { get; set; }
-        public string AuthorizationNumber { get; set; }
+        public string AuthotizationNumber { get; set; }
         public int? ProductItemGroupCode { get; set; }
         public string Declarable { get; set; }
         public string IVACode { get; set; }

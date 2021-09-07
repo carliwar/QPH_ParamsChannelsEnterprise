@@ -10,8 +10,8 @@ using Sieve.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using QPH.Encriptacion;
-using QPH.Encriptacion.Core.Interfaces;
+//using QPH.Encriptacion;
+//using QPH.Encriptacion.Core.Interfaces;
 
 namespace QPH_ParamsChannelsEnterprise.Core.Services
 {
@@ -19,16 +19,16 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IPasswordService _passwordService;
+        //private readonly IPasswordService _passwordService;
         private readonly SieveProcessor _sieveProcessor;
-        private readonly IEncriptador _qphEncriptador;
+        //private readonly IEncriptador _qphEncriptador;
 
-        public CredentialsServerService(IUnitOfWork unitOfWork, IMapper mapper, IPasswordService passwordService, IEncriptador qphEncriptador, SieveProcessor sieveProcessor)
+        public CredentialsServerService(IUnitOfWork unitOfWork, IMapper mapper, IPasswordService passwordService,/* IEncriptador qphEncriptador,*/ SieveProcessor sieveProcessor)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _passwordService = passwordService;
-            _qphEncriptador = qphEncriptador;
+            //_passwordService = passwordService;
+            //_qphEncriptador = qphEncriptador;
             _sieveProcessor = sieveProcessor;
         }
 
@@ -50,10 +50,10 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
             var credentialsServerDB = _mapper.Map<List<CredentialsServerDTO>>(resultDB);
 
             // Encrypt user & password
-            foreach(var credential in credentialsServerDB)
-            {
-                credential.Password = _qphEncriptador.Encriptar(credential.Password);
-            }
+            //foreach(var credential in credentialsServerDB)
+            //{
+            //    credential.Password = _qphEncriptador.Encriptar(credential.Password);
+            //}
 
             // Map the result to PagedList
             var result = PagedList<CredentialsServerDTO>.CreateFromResults(credentialsServerDB, sieveModel, totalCount);
@@ -65,7 +65,7 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
         {
             CredentialsServer dbRecord = await _unitOfWork.CredentialsServerRepository.GetById(id);
             CredentialsServerDTO result = _mapper.Map<CredentialsServerDTO>(dbRecord);
-            result.Password = _qphEncriptador.Encriptar(result.Password);
+            //result.Password = _qphEncriptador.Encriptar(result.Password);
             return result;
         }
 
@@ -75,7 +75,7 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
             CredentialsServer dbRecord = _mapper.Map<CredentialsServer>(newCredentialServer);
 
             // Encrypt password
-            dbRecord.Password = _passwordService.Hash(dbRecord.Password);
+            //dbRecord.Password = _passwordService.Hash(dbRecord.Password);
 
             await _unitOfWork.CredentialsServerRepository.Add(dbRecord);
             await _unitOfWork.SaveAdministrationSwitchChangesAsync();
@@ -92,8 +92,8 @@ namespace QPH_ParamsChannelsEnterprise.Core.Services
             var updatedRecord = _mapper.Map<CredentialsServer>(updatedCredentialsServerDTO);
 
             // Decrypt password to save
-            updatedRecord.Password = _qphEncriptador.Desencriptar(updatedRecord.Password);
-            updatedRecord.Password = _passwordService.Hash(updatedRecord.Password);
+            //updatedRecord.Password = _qphEncriptador.Desencriptar(updatedRecord.Password);
+            //updatedRecord.Password = _passwordService.Hash(updatedRecord.Password);
 
             _unitOfWork.CredentialsServerRepository.Update(existingRecord, updatedRecord);
 
