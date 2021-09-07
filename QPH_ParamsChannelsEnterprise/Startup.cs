@@ -33,6 +33,14 @@ namespace QPH_ParamsChannelsEnterprise
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<SieveProcessor>();
             services.AddServices();
+
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             //services.AddQPHEncriptador();
             services.AddSwagger($"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
             services.AddSwaggerGen(c =>
@@ -65,6 +73,9 @@ namespace QPH_ParamsChannelsEnterprise
             app.UseSwagger();
 
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("v1/swagger.json", "PARAMS CHANNELS ENTERPRISE API V1"); });
+
+            //use cors
+            app.UseCors("MyPolicy");
 
             app.UseEndpoints(endpoints =>
             {
